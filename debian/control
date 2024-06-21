@@ -1,15 +1,79 @@
-Source: template-repository
-Section: unknown
+Source: zfp
+Section: science
 Priority: optional
-Maintainer: Tsic404 <liuheng@deepin.org>
-Build-Depends: debhelper (>= 11)
-Standards-Version: 4.1.3
-Homepage: https://github.com/deepin-community/template-repository
-#Vcs-Browser: https://salsa.debian.org/debian/deepin-community-template-repository
-#Vcs-Git: https://salsa.debian.org/debian/deepin-community-template-repository.git
+Maintainer: Debian Science Maintainers <debian-science-maintainers@lists.alioth.debian.org>
+Uploaders: Alex Myczko <tar@debian.org>,
+           Antonio Valentino <antonio.valentino@tiscali.it>
+Rules-Requires-Root: no
+Testsuite: autopkgtest-pkg-pybuild
+Build-Depends: dpkg-dev (>= 1.22.5),
+ debhelper-compat (= 13),
+ cmake,
+ cython3,
+ gfortran,
+ dh-sequence-python3,
+ dh-sequence-numpy3,
+ libpython3-all-dev,
+ dh-sequence-pkgkde-symbolshelper,
+ python3-numpy,
+ python3-setuptools,
+ python3-all
+Standards-Version: 4.7.0
+Vcs-Browser: https://salsa.debian.org/science-team/zfp
+Vcs-Git: https://salsa.debian.org/science-team/zfp.git
+Homepage: https://zfp.llnl.gov
+Description: Fixed-Rate Compressed Floating-Point Arrays
+ This is a compressed format for representing multidimensional floating-point
+ and integer arrays.  zfp provides compressed-array classes that support high
+ throughput read and write random access to individual array elements. zfp
+ also supports serial and parallel (OpenMP and CUDA) compression of whole
+ arrays, e.g., for applications that read and write large data sets to and
+ from disk.
 
-Package: template-repository
+Package: libzfp1t64
+Provides: ${t64:Provides}
+Replaces: libzfp1
+Breaks: libzfp1 (<< ${source:Version})
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: <insert up to 60 chars description>
- <insert long description, indented with spaces>
+Multi-Arch: same
+Section: libs
+Depends:
+ ${shlibs:Depends},
+ ${misc:Depends}
+Description: ${source:Synopsis}
+ ${source:Extended-Description}
+
+Package: libzfp-dev
+Architecture: any
+Section: libdevel
+Depends:
+ ${misc:Depends},
+ libzfp1t64 (= ${binary:Version}),
+Description: ${source:Synopsis} (Development files)
+ ${source:Extended-Description}
+ .
+ This is a development package of zfp.
+
+Package: zfp
+Architecture: any
+Depends:
+ ${shlibs:Depends},
+ ${misc:Depends}
+Description: ${source:Synopsis} - binary programs
+ ${source:Extended-Description}
+ .
+ This package contains the binary program zfp.
+
+Package: python3-zfpy
+Architecture: any
+Section: python
+Depends:
+ ${misc:Depends},
+ ${python3:Depends},
+ ${shlibs:Depends},
+ libzfp1t64,
+ python3-numpy
+Description: Python 3 bindings to the ${source:Synopsis}
+ ${source:Extended-Description}
+ .
+ This is a Python package of zfp.

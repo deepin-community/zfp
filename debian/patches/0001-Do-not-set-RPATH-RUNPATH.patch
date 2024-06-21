@@ -1,0 +1,22 @@
+From: Antonio Valentino <antonio.valentino@tiscali.it>
+Date: Tue, 26 Dec 2023 11:04:28 +0000
+Subject: Do not set RPATH/RUNPATH
+
+Forwarded: not-needed
+---
+ CMakeLists.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 52ae158..21c84b4 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -52,7 +52,7 @@ if(NOT CMAKE_ARCHIVE_OUTPUT_DIRECTORY)
+ endif()
+ 
+ # Setup RPath
+-set(CMAKE_INSTALL_RPATH ${CMAKE_INSTALL_FULL_LIBDIR})
++# set(CMAKE_INSTALL_RPATH ${CMAKE_INSTALL_FULL_LIBDIR})
+ 
+ #------------------------------------------------------------------------------#
+ # Top level options

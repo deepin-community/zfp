@@ -1,4 +1,30 @@
 #!/usr/bin/make -f
+#export DH_VERBOSE = 1
+
+include /usr/share/dpkg/architecture.mk
+include /usr/share/dpkg/pkg-info.mk
+UPSTREAM_VERSION = $(shell echo $(DEB_VERSION_UPSTREAM) | sed -e 's/\+.*//')
+
+# See FEATURE AREAS in dpkg-buildflags(1).
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all optimize=+lto
+
+# See ENVIRONMENT in dpkg-buildflags(1).
+# Package maintainers to append CFLAGS.
+export DEB_CFLAGS_MAINT_APPEND  = -Wall -pedantic
+# Package maintainers to append LDFLAGS.
+#export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed
+
+export PYBUILD_CONFIGURE_ARGS=-DBUILD_ZFORP=ON -DBUILD_ZFPY=ON -DZFP_BUILD_TESTING_SMALL=OFF -DZFP_BIT_STREAM_WORD_SIZE=8
+export PYBUILD_SYSTEM=cmake
+ifneq ($(DEB_TARGET_ARCH_BITS),64)
+export PYBUILD_DISABLE=test
+endif
 
 %:
-	dh $@
+	dh $@ --buildsystem=pybuild
+
+override_dh_dwz:
+	@echo "BYE DWZ"
+
+override_dh_makeshlibs:
+	dh_makeshlibs -- -v$(UPSTREAM_VERSION) -c0
